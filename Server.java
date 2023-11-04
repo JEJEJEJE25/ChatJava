@@ -10,25 +10,24 @@ import java.net.Socket;
 public class Server {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		try {
-			ServerSocket serversock = new ServerSocket(6868);
-			Socket sock = serversock.accept();
+			ServerSocket serversock = new ServerSocket(5656);//connecting to the port
+			Socket sock = serversock.accept();//accepting connection
+			System.out.println("A Client has Join the server");
 			DataInputStream input = new DataInputStream(sock.getInputStream());
 			DataOutputStream output = new DataOutputStream(sock.getOutputStream());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-//			String str =(String)input.readUTF();
 			String str1="",str2="";
-			while(!str1.equals("end")) {
-//				not until someone send end
+
+			while(!str1.equals("end")) { //end means terminate
+				str1 = input.readUTF();
+				System.out.println("CLient CHAT: "+str1);//display the client message
+				System.out.print("REPLY: "); //Entering the client reply
 				str2 = reader.readLine();
 				output.writeUTF(str2);
 				output.flush();
-				System.out.println("The Client Says"+str1);
-				
 			}
-//			System.out.println("Message = "+str1);
-			output.close();
+			input.close();
 			sock.close();
 			serversock.close();
 		}catch(Exception ex) {
